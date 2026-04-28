@@ -122,7 +122,7 @@ body {
   text-align:center; width:100%;
   pointer-events:auto;  /* FIXED — was 'none', broke all word clicks */
 }
-#shayari-text .line-span { display:block; }
+#shayari-text .line-span { display:block; text-align:inherit; }
 #shayari-text .word-span {
   display:inline; border-radius:2px;
   cursor:pointer; /* words are clickable */
@@ -135,6 +135,18 @@ body {
 }
 /* drag cursor on shayari-display itself but only when NOT on words */
 #shayari-display.dragging { cursor:grabbing; }
+
+/* Line separator between shayari lines */
+.line-separator {
+  display: block;
+  width: 60%;
+  margin: 0 auto;
+  border: none;
+  height: var(--sep-thickness, 1px);
+  background: var(--sep-color, currentColor);
+  opacity: var(--sep-opacity, 0.35);
+  pointer-events: none;
+}
 
 #text-drag-hint {
   position:absolute; bottom:-18px; left:50%; transform:translateX(-50%);
@@ -437,20 +449,18 @@ input[type="file"]   { display:none; }
                    onerror="this.style.display='none';document.getElementById('avatar-emoji').style.display='flex'">
               <span id="avatar-emoji" style="display:none;">❤️</span>
             </div>
-            <svg id="verified-badge" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-              <path d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91-1.01-1.01-2.52-1.27-3.91-.81-.67-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.34 2.19c-1.39-.46-2.9-.2-3.91.81-1.01 1.01-1.27 2.52-.81 3.91C2.63 9.33 1.75 10.57 1.75 12s.88 2.67 2.19 3.34c-.46 1.39-.2 2.9.81 3.91 1.01 1.01 2.52 1.27 3.91.81.67 1.31 1.91 2.19 3.34 2.19s2.67-.88 3.34-2.19c1.39.46 2.9.2 3.91-.81 1.01-1.01 1.27-2.52.81-3.91 1.31-.67 2.19-1.91 2.19-3.34zm-11.71 4.2L6.8 12.46l1.41-1.42 2.26 2.26 4.8-5.23 1.47 1.36-6.2 6.77z" fill="#1d9bf0"/>
-            </svg>
+            <img id="verified-badge" alt="verified" src="../assets/blue.png">
           </div>
           <div>
             <div id="profile-name-display">Dil Tak ❤️</div>
-            <div id="profile-handle-display">@x__bani.writer__</div>
+            <div id="profile-handle-display">@X__bani.writer__</div>
           </div>
         </div>
 
         <!-- SHAYARI (draggable, words clickable) -->
         <div id="shayari-display">
           <div id="shayari-text"></div>
-          <div id="text-drag-hint">drag to reposition</div>
+          <div id="text-drag-hint">2-finger drag to reposition</div>
         </div>
 
         <!-- WORD ZOOM POPUP (inside card so z-index stacks correctly) -->
@@ -646,6 +656,25 @@ input[type="file"]   { display:none; }
           <button class="align-btn" onclick="setTextShadow('hard',this)">Hard</button>
           <button class="align-btn" onclick="setTextShadow('glow',this)">Glow</button>
         </div>
+
+        <label style="margin-top:14px;">Line Separator</label>
+        <div class="align-row" id="sep-style-row">
+          <button class="align-btn active" onclick="setSepStyle('none',this)">None</button>
+          <button class="align-btn" onclick="setSepStyle('line',this)">Line</button>
+          <button class="align-btn" onclick="setSepStyle('dots',this)">· · ·</button>
+          <button class="align-btn" onclick="setSepStyle('diamond',this)">◆</button>
+        </div>
+        <div id="sep-options" style="display:none;margin-top:8px;">
+          <label>Separator Colour</label>
+          <div class="color-row">
+            <input type="color" id="sep-color" value="#111111" oninput="setSepColor(this.value)">
+            <span>Line / ornament colour</span>
+          </div>
+          <label style="margin-top:8px;">Opacity — <span class="val" id="sep-opacity-val">35</span>%</label>
+          <input type="range" min="5" max="100" value="35" id="sep-opacity-range" oninput="setSepOpacity(this.value)">
+          <label style="margin-top:8px;">Width — <span class="val" id="sep-width-val">60</span>%</label>
+          <input type="range" min="10" max="100" value="60" id="sep-width-range" oninput="setSepWidth(this.value)">
+        </div>
       </div>
     </div>
 
@@ -834,6 +863,12 @@ let lineOverrides = {};
 
 let selectedWordKey = null;
 
+// separator
+let sepStyle   = 'none';   // 'none' | 'line' | 'dots' | 'diamond'
+let sepColor   = '#111111';
+let sepOpacity = 35;
+let sepWidth   = 60;
+
 // drag
 let dragTarget = null;
 let dragOffX = 0, dragOffY = 0;
@@ -933,6 +968,13 @@ function renderShayari() {
       if (lo.size)  lineSpan.style.fontSize = lo.size + 'px';
     }
 
+    // Empty line — render as a blank spacer line with full line-height
+    if (!line.trim()) {
+      lineSpan.innerHTML = '&nbsp;';
+      st.appendChild(lineSpan);
+      return; // skip separator for blank lines
+    }
+
     let wi = 0;
     line.split(/(\s+)/).forEach(part => {
       if (/^\s+$/.test(part)) {
@@ -957,6 +999,38 @@ function renderShayari() {
     });
 
     st.appendChild(lineSpan);
+
+    // Insert separator between lines (not after last line)
+    if (li < lines.length - 1 && sepStyle !== 'none') {
+      const sep = document.createElement('span');
+      sep.className = 'line-separator';
+      sep.setAttribute('data-sep','1');
+      sep.style.background = 'none';
+      sep.style.height     = 'auto';
+      sep.style.opacity    = '1';
+      sep.style.margin     = '0 auto';
+      sep.style.display    = 'block';
+      sep.style.textAlign  = 'center';
+      sep.style.width      = sepWidth + '%';
+      sep.style.color      = sepColor;
+      sep.style.opacity    = (sepOpacity / 100).toFixed(2);
+
+      if (sepStyle === 'line') {
+        sep.style.borderTop = `1px solid ${sepColor}`;
+        sep.style.height    = '0';
+        sep.style.margin    = '4px auto';
+      } else if (sepStyle === 'dots') {
+        sep.textContent = '· · ·';
+        sep.style.fontSize  = '0.55em';
+        sep.style.lineHeight = '1.2';
+        sep.style.letterSpacing = '0.25em';
+      } else if (sepStyle === 'diamond') {
+        sep.textContent = '◆';
+        sep.style.fontSize  = '0.5em';
+        sep.style.lineHeight = '1.2';
+      }
+      st.appendChild(sep);
+    }
   });
 
   buildLineEditor(lines);
@@ -1328,6 +1402,31 @@ function setTextWidth(v) {
 }
 
 /* ══════════════════════════════════════════
+   LINE SEPARATOR CONTROLS
+══════════════════════════════════════════ */
+function setSepStyle(style, btn) {
+  sepStyle = style;
+  document.querySelectorAll('#sep-style-row .align-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('sep-options').style.display = style === 'none' ? 'none' : 'block';
+  renderShayari();
+}
+function setSepColor(val) {
+  sepColor = val;
+  renderShayari();
+}
+function setSepOpacity(val) {
+  sepOpacity = parseInt(val);
+  document.getElementById('sep-opacity-val').textContent = val;
+  renderShayari();
+}
+function setSepWidth(val) {
+  sepWidth = parseInt(val);
+  document.getElementById('sep-width-val').textContent = val;
+  renderShayari();
+}
+
+/* ══════════════════════════════════════════
    DRAG — shayari block & profile chip
    Key: pointerMoved flag tells word-click
    handler whether a drag just happened.
@@ -1347,12 +1446,13 @@ function initDrag() {
     e.preventDefault();
   }
 
-  // Shayari block: start drag only on the CONTAINER, not on word-spans
+  // Shayari block: mouse = single click drag; touch = TWO fingers to drag
   shayari.addEventListener('mousedown', e => {
     if (e.target.closest('.word-span')) return;  // let word clicks through
     startDrag(e, shayari);
   });
   shayari.addEventListener('touchstart', e => {
+    if (e.touches.length < 2) return;  // require TWO fingers to drag
     if (e.target.closest('.word-span')) return;
     startDrag(e, shayari);
   }, { passive:false });
@@ -1387,6 +1487,11 @@ function initDrag() {
 
 function getPos(e, rel) {
   const r = rel.getBoundingClientRect();
+  if (e.touches && e.touches.length >= 2) {
+    const mx = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+    const my = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+    return { x: mx - r.left, y: my - r.top };
+  }
   const s = e.touches ? e.touches[0] : e;
   return { x: s.clientX - r.left, y: s.clientY - r.top };
 }
