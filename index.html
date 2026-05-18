@@ -81,6 +81,39 @@ body {
 }
 #bg-img-shadow-overlay.visible { display:block; }
 
+/* ═══ NOTEBOOK LAYER ═══ */
+#notebook-layer {
+  position:absolute; inset:0; z-index:1; pointer-events:none; display:none;
+}
+#notebook-layer.visible { display:block; }
+
+/* notebook template picker */
+.notebook-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin-top:6px;
+}
+.nb-card {
+  border:2px solid #2a2a2a; border-radius:9px; padding:0;
+  cursor:pointer; overflow:hidden; transition:border-color .2s,transform .15s;
+  position:relative; aspect-ratio:4/5; background:#111;
+}
+.nb-card:hover { border-color:#777; transform:scale(1.04); }
+.nb-card.active { border-color:#d4a84b; box-shadow:0 0 0 2px rgba(212,168,75,.3); }
+.nb-card svg { width:100%; height:100%; display:block; }
+.nb-card .nb-label {
+  position:absolute; bottom:4px; left:0; right:0; text-align:center;
+  font-size:9px; font-weight:700; letter-spacing:.5px; text-transform:uppercase;
+  color:#888; pointer-events:none; padding-bottom:2px;
+}
+.nb-card.active .nb-label { color:#d4a84b; }
+
+.nb-section-title {
+  font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+  color:#555; margin:14px 0 6px; display:block;
+}
+.nb-controls { margin-top:10px; }
+#nb-paper-color-wrap { display:none; margin-top:8px; }
+#nb-paper-color-wrap.visible { display:block; }
+
 /* ═══ GUIDELINE ═══ */
 #guideline-45 {
   position:absolute; left:50%; top:50%; transform:translate(-50%,-50%);
@@ -152,8 +185,8 @@ body {
 }
 #shayari-text {
   font-family:'Hind',sans-serif; font-weight:700;
-  font-size:18px; line-height:1.35; color:#111;
-  letter-spacing:0px; text-align:left; width:100%;
+  font-size:17px; line-height:1.3; color:#111;
+  text-align:left; width:100%;
   pointer-events:auto;
 }
 #shayari-text .line-span { display:block; text-align:inherit; }
@@ -466,6 +499,122 @@ input[type="file"]   { display:none; }
 
 #shadow-intensity-wrap { display:none; margin-top:8px; }
 #shadow-intensity-wrap.visible { display:block; }
+
+/* ═══ PRESET BACKGROUND GRID ═══ */
+.preset-bg-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:6px; margin-top:6px;
+}
+.preset-bg-card {
+  border:2px solid #2a2a2a; border-radius:9px; overflow:hidden;
+  cursor:pointer; transition:border-color .2s,transform .15s;
+  position:relative; background:#111;
+}
+.preset-bg-card:hover { border-color:#777; transform:scale(1.04); }
+.preset-bg-card.active { border-color:#d4a84b; box-shadow:0 0 0 2px rgba(212,168,75,.3); }
+.preset-bg-thumb {
+  width:100%; aspect-ratio:9/16; display:block;
+}
+.preset-bg-label {
+  display:block; text-align:center; font-size:9px; font-weight:700;
+  letter-spacing:.5px; text-transform:uppercase; color:#666;
+  padding:4px 0; background:#0e0e0e;
+}
+.preset-bg-card.active .preset-bg-label { color:#d4a84b; }
+
+/* ═══ ASSET PRESET BG SECTION ═══ */
+.asset-bg-section-title {
+  font-size:10px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase;
+  color:#d4a84b; margin:14px 0 6px; display:flex; align-items:center; gap:7px;
+}
+.asset-bg-section-title::after {
+  content:''; flex:1; height:1px; background:linear-gradient(90deg,#d4a84b44,transparent);
+}
+
+.asset-bg-grid {
+  display:grid; grid-template-columns:repeat(3,1fr); gap:7px; margin-top:4px;
+}
+.asset-bg-card {
+  border:2px solid #2a2a2a; border-radius:10px; overflow:hidden;
+  cursor:pointer; transition:border-color .2s,transform .15s,box-shadow .2s;
+  position:relative; background:#111;
+}
+.asset-bg-card:hover { border-color:#888; transform:scale(1.04); box-shadow:0 4px 16px rgba(0,0,0,.5); }
+.asset-bg-card.active {
+  border-color:#d4a84b;
+  box-shadow:0 0 0 2px rgba(212,168,75,.35), 0 4px 16px rgba(212,168,75,.2);
+}
+.asset-bg-thumb-img {
+  width:100%; aspect-ratio:9/16; object-fit:cover; display:block;
+  background:#1a1a1a;
+}
+.asset-bg-label {
+  display:block; text-align:center; font-size:9px; font-weight:700;
+  letter-spacing:.5px; text-transform:uppercase; color:#666;
+  padding:4px 0; background:#0e0e0e;
+}
+.asset-bg-card.active .asset-bg-label { color:#d4a84b; }
+
+/* ═══ BG LOCK TOGGLE ═══ */
+#bg-lock-toggle.on { border-color:#d4a84b; background:#151109; }
+#bg-lock-toggle.on .toggle-label { color:#e0c060; }
+#bg-lock-toggle.on .tog-switch { background:#c8a84b; }
+.bg-lock-hint {
+  font-size:10px; color:#555; line-height:1.5; margin-top:6px;
+  padding:6px 10px; background:#0e0e0e; border:1px solid #1e1e1e; border-radius:7px;
+}
+
+/* ═══ PIP / STICKER IMAGE ═══ */
+#pip-img-el {
+  position:absolute;
+  top:60px; left:60px;
+  width:auto; height:auto;
+  min-width:40px; min-height:40px;
+  z-index:15;
+  cursor:grab;
+  touch-action:none;
+  display:none;
+  user-select:none;
+  -webkit-user-drag:none;
+  transform-origin:top left;
+  border-radius:0px;
+  transition:box-shadow .2s;
+}
+#pip-img-el:active { cursor:grabbing; }
+#pip-img-el.dragging { cursor:grabbing; }
+#pip-img-el.pip-selected {
+  outline:2px dashed rgba(100,180,255,.7);
+  outline-offset:3px;
+}
+
+/* pip controls panel section */
+#pip-img-controls {
+  display:none; flex-direction:column; gap:8px; margin-top:10px;
+  background:#111; border:1px solid #222; border-radius:10px; padding:12px;
+}
+#pip-img-controls.visible { display:flex; }
+.pip-img-hint {
+  font-size:10px; color:#555; line-height:1.6;
+  background:#0e0e0e; border:1px solid #1e1e1e; border-radius:7px;
+  padding:8px 10px;
+}
+.pip-img-hint b { color:#777; }
+.pip-corner-row { display:flex; gap:5px; flex-wrap:wrap; margin-top:4px; }
+.pip-corner-btn {
+  flex:1; min-width:60px; background:#1a1a1a; border:1px solid #2a2a2a; border-radius:7px;
+  color:#666; font-size:10px; font-weight:700; padding:6px 4px;
+  cursor:pointer; text-align:center; font-family:'Hind',sans-serif;
+  transition:border-color .2s,color .2s,background .2s;
+}
+.pip-corner-btn:hover { border-color:#888; color:#eee; background:#222; }
+.pip-shape-row { display:flex; gap:5px; margin-top:4px; }
+.pip-shape-btn {
+  flex:1; background:#1a1a1a; border:1px solid #2a2a2a; border-radius:7px;
+  color:#666; font-size:10px; font-weight:700; padding:6px 4px;
+  cursor:pointer; text-align:center; font-family:'Hind',sans-serif;
+  transition:border-color .2s,color .2s,background .2s;
+}
+.pip-shape-btn:hover { border-color:#888; color:#eee; }
+.pip-shape-btn.active { border-color:#bbb; background:#1c1c1c; color:#fff; }
 </style>
 </head>
 <body>
@@ -506,6 +655,12 @@ input[type="file"]   { display:none; }
         <!-- Premium all-edges shadow overlay for bg image -->
         <div id="bg-img-shadow-overlay"></div>
 
+        <!-- PIP / STICKER IMAGE — sits above bg, below text -->
+        <img id="pip-img-el" src="" alt="" draggable="false">
+
+        <!-- Notebook background layer -->
+        <div id="notebook-layer"></div>
+
         <div id="overlay-layer"></div>
         <div id="guideline-45"></div>
 
@@ -515,14 +670,14 @@ input[type="file"]   { display:none; }
             <div id="avatar-ring-outer"></div>
             <div id="avatar-ring-inner"></div>
             <div id="avatar-img-wrap">
-              <img id="avatar-img" src="assets/image.png" alt=""
+              <img id="avatar-img" src="assets/ghalib.jpg" alt=""
                 onerror="this.style.display='none';document.getElementById('avatar-emoji').style.display='flex'">
               <span id="avatar-emoji" style="display:none;">❤️</span>
             </div>
-            <img id="verified-badge" alt="verified" src="../assets/blue.png">
+            <img id="verified-badge" alt="verified" src="assets/blue.png">
           </div>
           <div>
-            <div id="profile-name-display">Dil Tak ❤️</div>
+            <div id="profile-name-display">Dil Tak</div>
             <div id="profile-handle-display">@X__bani.writer__</div>
           </div>
         </div>
@@ -637,14 +792,11 @@ input[type="file"]   { display:none; }
           <div class="font-card" data-font="'Anton', sans-serif"><div class="fp" style="font-family:'Anton',sans-serif;">HINDI AA</div><div class="fn">Anton</div></div>
         </div>
 
-        <label style="margin-top:14px;">Font Size — <span class="val" id="font-size-val">18</span>px</label>
-        <input type="range" min="12" max="60" value="18" id="font-size-range" oninput="setFontSize(this.value)">
+        <label style="margin-top:14px;">Font Size — <span class="val" id="font-size-val">17</span>px</label>
+        <input type="range" min="12" max="60" value="17" id="font-size-range" oninput="setFontSize(this.value)">
 
-        <label>Line Height — <span class="val" id="line-height-val">1.35</span></label>
-        <input type="range" min="1.0" max="3.0" step="0.05" value="1.35" id="line-height-range" oninput="setLineHeight(this.value)">
-
-        <label>Letter Spacing — <span class="val" id="letter-spacing-val">0</span>px</label>
-        <input type="range" min="-2" max="8" step="0.5" value="0" id="letter-spacing-range" oninput="setLetterSpacing(this.value)">
+        <label>Line Height — <span class="val" id="line-height-val">1.3</span></label>
+        <input type="range" min="1.0" max="3.0" step="0.05" value="1.3" id="line-height-range" oninput="setLineHeight(this.value)">
 
         <label>Font Weight</label>
         <div class="align-row" id="weight-row">
@@ -731,7 +883,190 @@ input[type="file"]   { display:none; }
         <span class="panel-chevron">▼</span>
       </div>
       <div class="panel-body">
-        <label>Preset Gradients</label>
+        <span class="nb-section-title">📓 Notebook Templates</span>
+        <div class="notebook-grid" id="nb-grid">
+
+          <!-- 1. OFF (no notebook) -->
+          <div class="nb-card active" data-nb="none" onclick="setNotebook('none',this)" title="No notebook">
+            <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+              <rect width="80" height="100" fill="#1a1a1a"/>
+              <line x1="40" y1="20" x2="40" y2="80" stroke="#333" stroke-width="2"/>
+              <line x1="20" y1="50" x2="60" y2="50" stroke="#333" stroke-width="2"/>
+            </svg>
+            <span class="nb-label">Off</span>
+          </div>
+
+          <!-- 2. Classic White Ruled -->
+          <div class="nb-card" data-nb="white-ruled" onclick="setNotebook('white-ruled',this)" title="Classic white lined notebook">
+            <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+              <rect width="80" height="100" fill="#fafaf7"/>
+              <!-- spiral holes -->
+              <circle cx="12" cy="14" r="3.5" fill="none" stroke="#c0b89a" stroke-width="1.5"/>
+              <circle cx="12" cy="30" r="3.5" fill="none" stroke="#c0b89a" stroke-width="1.5"/>
+              <circle cx="12" cy="46" r="3.5" fill="none" stroke="#c0b89a" stroke-width="1.5"/>
+              <circle cx="12" cy="62" r="3.5" fill="none" stroke="#c0b89a" stroke-width="1.5"/>
+              <circle cx="12" cy="78" r="3.5" fill="none" stroke="#c0b89a" stroke-width="1.5"/>
+              <circle cx="12" cy="94" r="3.5" fill="none" stroke="#c0b89a" stroke-width="1.5"/>
+              <!-- margin line -->
+              <line x1="22" y1="0" x2="22" y2="100" stroke="#f0a0a0" stroke-width="1"/>
+              <!-- ruled lines -->
+              <line x1="22" y1="18" x2="76" y2="18" stroke="#c8d4e8" stroke-width=".7"/>
+              <line x1="22" y1="28" x2="76" y2="28" stroke="#c8d4e8" stroke-width=".7"/>
+              <line x1="22" y1="38" x2="76" y2="38" stroke="#c8d4e8" stroke-width=".7"/>
+              <line x1="22" y1="48" x2="76" y2="48" stroke="#c8d4e8" stroke-width=".7"/>
+              <line x1="22" y1="58" x2="76" y2="58" stroke="#c8d4e8" stroke-width=".7"/>
+              <line x1="22" y1="68" x2="76" y2="68" stroke="#c8d4e8" stroke-width=".7"/>
+              <line x1="22" y1="78" x2="76" y2="78" stroke="#c8d4e8" stroke-width=".7"/>
+              <line x1="22" y1="88" x2="76" y2="88" stroke="#c8d4e8" stroke-width=".7"/>
+              <!-- spiral coil -->
+              <path d="M12 10 Q6 12 6 18 Q6 24 12 26 Q18 28 18 34 Q18 40 12 42 Q6 44 6 50 Q6 56 12 58 Q18 60 18 66 Q18 72 12 74 Q6 76 6 82 Q6 88 12 90" fill="none" stroke="#b0b0b0" stroke-width="1.2" stroke-linecap="round"/>
+            </svg>
+            <span class="nb-label">Ruled</span>
+          </div>
+
+          <!-- 3. Yellow Legal Pad -->
+          <div class="nb-card" data-nb="legal-pad" onclick="setNotebook('legal-pad',this)" title="Yellow legal pad">
+            <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+              <rect width="80" height="100" fill="#fef3a0"/>
+              <!-- top binding strip -->
+              <rect width="80" height="10" fill="#e8d84a"/>
+              <line x1="0" y1="10" x2="80" y2="10" stroke="#c8b800" stroke-width="1"/>
+              <!-- punch holes in binding -->
+              <circle cx="15" cy="5" r="2.5" fill="#c8b800"/>
+              <circle cx="40" cy="5" r="2.5" fill="#c8b800"/>
+              <circle cx="65" cy="5" r="2.5" fill="#c8b800"/>
+              <!-- margin line -->
+              <line x1="18" y1="10" x2="18" y2="100" stroke="#f0a0a0" stroke-width="1"/>
+              <!-- lines -->
+              <line x1="18" y1="22" x2="77" y2="22" stroke="#bba800" stroke-width=".8" opacity=".5"/>
+              <line x1="18" y1="32" x2="77" y2="32" stroke="#bba800" stroke-width=".8" opacity=".5"/>
+              <line x1="18" y1="42" x2="77" y2="42" stroke="#bba800" stroke-width=".8" opacity=".5"/>
+              <line x1="18" y1="52" x2="77" y2="52" stroke="#bba800" stroke-width=".8" opacity=".5"/>
+              <line x1="18" y1="62" x2="77" y2="62" stroke="#bba800" stroke-width=".8" opacity=".5"/>
+              <line x1="18" y1="72" x2="77" y2="72" stroke="#bba800" stroke-width=".8" opacity=".5"/>
+              <line x1="18" y1="82" x2="77" y2="82" stroke="#bba800" stroke-width=".8" opacity=".5"/>
+              <line x1="18" y1="92" x2="77" y2="92" stroke="#bba800" stroke-width=".8" opacity=".5"/>
+            </svg>
+            <span class="nb-label">Legal Pad</span>
+          </div>
+
+          <!-- 4. Parchment / Vintage -->
+          <div class="nb-card" data-nb="parchment" onclick="setNotebook('parchment',this)" title="Vintage parchment">
+            <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="pg1" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#f5e6c8"/>
+                  <stop offset="100%" stop-color="#e8d0a0"/>
+                </linearGradient>
+              </defs>
+              <rect width="80" height="100" fill="url(#pg1)"/>
+              <!-- torn left edge effect -->
+              <path d="M0 0 Q3 5 0 10 Q3 20 0 30 Q3 40 0 50 Q3 60 0 70 Q3 80 0 90 Q3 95 0 100 L0 0Z" fill="#d4b878" opacity=".4"/>
+              <!-- decorative border top -->
+              <rect x="5" y="5" width="70" height="90" fill="none" stroke="#a08040" stroke-width=".8" opacity=".5"/>
+              <rect x="7" y="7" width="66" height="86" fill="none" stroke="#a08040" stroke-width=".4" opacity=".3"/>
+              <!-- faint lines -->
+              <line x1="8" y1="22" x2="73" y2="22" stroke="#8b6914" stroke-width=".5" opacity=".3"/>
+              <line x1="8" y1="32" x2="73" y2="32" stroke="#8b6914" stroke-width=".5" opacity=".3"/>
+              <line x1="8" y1="42" x2="73" y2="42" stroke="#8b6914" stroke-width=".5" opacity=".3"/>
+              <line x1="8" y1="52" x2="73" y2="52" stroke="#8b6914" stroke-width=".5" opacity=".3"/>
+              <line x1="8" y1="62" x2="73" y2="62" stroke="#8b6914" stroke-width=".5" opacity=".3"/>
+              <line x1="8" y1="72" x2="73" y2="72" stroke="#8b6914" stroke-width=".5" opacity=".3"/>
+              <line x1="8" y1="82" x2="73" y2="82" stroke="#8b6914" stroke-width=".5" opacity=".3"/>
+            </svg>
+            <span class="nb-label">Parchment</span>
+          </div>
+
+          <!-- 5. Dark / Blackboard -->
+          <div class="nb-card" data-nb="blackboard" onclick="setNotebook('blackboard',this)" title="Blackboard / dark slate">
+            <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+              <defs>
+                <linearGradient id="bg1" x1="0" y1="0" x2="1" y2="1">
+                  <stop offset="0%" stop-color="#1e2a1e"/>
+                  <stop offset="100%" stop-color="#0d1a0d"/>
+                </linearGradient>
+              </defs>
+              <rect width="80" height="100" fill="url(#bg1)"/>
+              <!-- chalk ledge -->
+              <rect x="0" y="92" width="80" height="8" fill="#1a2a1a"/>
+              <rect x="8" y="93" width="12" height="4" rx="1" fill="#e8e4d8"/>
+              <rect x="24" y="93" width="8" height="4" rx="1" fill="#f0d8a0"/>
+              <!-- chalk lines -->
+              <line x1="8" y1="20" x2="72" y2="20" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+              <line x1="8" y1="30" x2="72" y2="30" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+              <line x1="8" y1="40" x2="72" y2="40" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+              <line x1="8" y1="50" x2="72" y2="50" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+              <line x1="8" y1="60" x2="72" y2="60" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+              <line x1="8" y1="70" x2="72" y2="70" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+              <line x1="8" y1="80" x2="72" y2="80" stroke="rgba(255,255,255,.12)" stroke-width="1"/>
+              <!-- wood frame -->
+              <rect x="0" y="0" width="80" height="5" fill="#5c3a1a"/>
+              <rect x="0" y="95" width="80" height="5" fill="#5c3a1a"/>
+              <rect x="0" y="0" width="4" height="100" fill="#5c3a1a"/>
+              <rect x="76" y="0" width="4" height="100" fill="#5c3a1a"/>
+            </svg>
+            <span class="nb-label">Blackboard</span>
+          </div>
+
+          <!-- 6. Spiral open book -->
+          <div class="nb-card" data-nb="open-book" onclick="setNotebook('open-book',this)" title="Open spiral notebook spread">
+            <svg viewBox="0 0 80 100" xmlns="http://www.w3.org/2000/svg">
+              <rect width="80" height="100" fill="#f0ede6"/>
+              <!-- page shadow / gutter -->
+              <rect x="36" y="0" width="8" height="100" fill="rgba(0,0,0,.07)"/>
+              <line x1="40" y1="0" x2="40" y2="100" stroke="#ccc" stroke-width=".5"/>
+              <!-- left page lines -->
+              <line x1="8" y1="15" x2="36" y2="15" stroke="#b8c8e0" stroke-width=".7"/>
+              <line x1="8" y1="24" x2="36" y2="24" stroke="#b8c8e0" stroke-width=".7"/>
+              <line x1="8" y1="33" x2="36" y2="33" stroke="#b8c8e0" stroke-width=".7"/>
+              <line x1="8" y1="42" x2="36" y2="42" stroke="#b8c8e0" stroke-width=".7"/>
+              <line x1="8" y1="51" x2="36" y2="51" stroke="#b8c8e0" stroke-width=".7"/>
+              <line x1="8" y1="60" x2="36" y2="60" stroke="#b8c8e0" stroke-width=".7"/>
+              <line x1="8" y1="69" x2="36" y2="69" stroke="#b8c8e0" stroke-width=".7"/>
+              <line x1="8" y1="78" x2="36" y2="78" stroke="#b8c8e0" stroke-width=".7"/>
+              <line x1="8" y1="87" x2="36" y2="87" stroke="#b8c8e0" stroke-width=".7"/>
+              <!-- right page lines -->
+              <line x1="44" y1="15" x2="73" y2="15" stroke="#b8c8e0" stroke-width=".7"/>
+              <line x1="44" y1="24" x2="73" y2="24" stroke="#b8c8e0" stroke-width=".7"/>
+              <line x1="44" y1="33" x2="73" y2="33" stroke="#b8c8e0" stroke-width=".7"/>
+              <line x1="44" y1="42" x2="73" y2="42" stroke="#b8c8e0" stroke-width=".7"/>
+              <line x1="44" y1="51" x2="73" y2="51" stroke="#b8c8e0" stroke-width=".7"/>
+              <line x1="44" y1="60" x2="73" y2="60" stroke="#b8c8e0" stroke-width=".7"/>
+              <line x1="44" y1="69" x2="73" y2="69" stroke="#b8c8e0" stroke-width=".7"/>
+              <line x1="44" y1="78" x2="73" y2="78" stroke="#b8c8e0" stroke-width=".7"/>
+              <line x1="44" y1="87" x2="73" y2="87" stroke="#b8c8e0" stroke-width=".7"/>
+              <!-- spiral coil in center -->
+              <circle cx="40" cy="14" r="2.5" fill="none" stroke="#888" stroke-width="1.2"/>
+              <circle cx="40" cy="24" r="2.5" fill="none" stroke="#888" stroke-width="1.2"/>
+              <circle cx="40" cy="34" r="2.5" fill="none" stroke="#888" stroke-width="1.2"/>
+              <circle cx="40" cy="44" r="2.5" fill="none" stroke="#888" stroke-width="1.2"/>
+              <circle cx="40" cy="54" r="2.5" fill="none" stroke="#888" stroke-width="1.2"/>
+              <circle cx="40" cy="64" r="2.5" fill="none" stroke="#888" stroke-width="1.2"/>
+              <circle cx="40" cy="74" r="2.5" fill="none" stroke="#888" stroke-width="1.2"/>
+              <circle cx="40" cy="84" r="2.5" fill="none" stroke="#888" stroke-width="1.2"/>
+              <circle cx="40" cy="94" r="2.5" fill="none" stroke="#888" stroke-width="1.2"/>
+            </svg>
+            <span class="nb-label">Open Book</span>
+          </div>
+
+        </div>
+
+        <div id="nb-controls" style="display:none;margin-top:10px;">
+          <label>Paper Colour</label>
+          <div class="color-row">
+            <input type="color" id="nb-paper-color" value="#fafaf7" oninput="setNbPaperColor(this.value)">
+            <span>Customize paper tint</span>
+          </div>
+          <label style="margin-top:8px;">Line Colour</label>
+          <div class="color-row">
+            <input type="color" id="nb-line-color" value="#b8c8e0" oninput="setNbLineColor(this.value)">
+            <span>Customize rule lines</span>
+          </div>
+          <label style="margin-top:8px;">Paper Opacity — <span class="val" id="nb-opacity-val">100</span>%</label>
+          <input type="range" min="20" max="100" value="100" id="nb-opacity-range" oninput="setNbOpacity(this.value)">
+        </div>
+
+        <label style="margin-top:16px;">Preset Gradients</label>
         <div class="bg-list" id="bg-swatches"></div>
 
         <label style="margin-top:12px;">Solid Colour</label>
@@ -743,6 +1078,73 @@ input[type="file"]   { display:none; }
         <label style="margin-top:12px;">Background Image</label>
         <label class="upload-btn" for="bg-img-input">📸 Upload Image (PNG / JPG / WebP)</label>
         <input type="file" id="bg-img-input" accept="image/*" onchange="loadBgImage(this)">
+
+        <label style="margin-top:10px;">Preset Backgrounds (auto-fill card)</label>
+
+        <!-- ✨ ASSET BACKGROUNDS from assets/ folder -->
+        <span class="asset-bg-section-title">🏔️ Photo Backgrounds</span>
+        <div class="asset-bg-grid" id="asset-bg-grid">
+          <div class="asset-bg-card" data-asset="assets/Bg_Brown-1.png" onclick="applyAssetBg(this)" title="Brown Texture 1">
+            <img class="asset-bg-thumb-img" src="assets/Bg_Brown-1.png" alt="Brown 1" loading="lazy">
+            <span class="asset-bg-label">Brown I</span>
+          </div>
+          <div class="asset-bg-card" data-asset="assets/Bg_Brown_2.png" onclick="applyAssetBg(this)" title="Brown Texture 2">
+            <img class="asset-bg-thumb-img" src="assets/Bg_Brown_2.png" alt="Brown 2" loading="lazy">
+            <span class="asset-bg-label">Brown II</span>
+          </div>
+          <div class="asset-bg-card" data-asset="assets/Bg_Brown_3.png" onclick="applyAssetBg(this)" title="Brown Texture 3">
+            <img class="asset-bg-thumb-img" src="assets/Bg_Brown_3.png" alt="Brown 3" loading="lazy">
+            <span class="asset-bg-label">Brown III</span>
+          </div>
+          <div class="asset-bg-card" data-asset="assets/Bg_Cream.png" onclick="applyAssetBg(this)" title="Cream Texture">
+            <img class="asset-bg-thumb-img" src="assets/Bg_Cream.png" alt="Cream" loading="lazy">
+            <span class="asset-bg-label">Cream</span>
+          </div>
+          <div class="asset-bg-card" data-asset="assets/Bg_Cream1.png" onclick="applyAssetBg(this)" title="Cream Texture 1">
+            <img class="asset-bg-thumb-img" src="assets/Bg_Cream1.png" alt="Cream 1" loading="lazy">
+            <span class="asset-bg-label">Cream II</span>
+          </div>
+        </div>
+
+        <!-- 🔒 BACKGROUND LOCK — shown after any bg image is applied -->
+        <div id="bg-lock-wrap" style="display:none; margin-top:10px;">
+          <div class="toggle-row" id="bg-lock-toggle" onclick="toggleBgLock()">
+            <span class="toggle-label">🔒 Lock Background</span>
+            <div class="tog-switch"></div>
+          </div>
+          <div class="bg-lock-hint" id="bg-lock-hint" style="display:none;">
+            Background is locked — it won't move while you adjust text, stickers or other elements.
+          </div>
+        </div>
+
+        <span class="asset-bg-section-title" style="margin-top:14px;">✨ Gradient Presets</span>
+        <div class="preset-bg-grid" id="preset-bg-grid">
+          <!-- These apply rich gradient/pattern backgrounds directly -->
+          <div class="preset-bg-card" data-preset="mughal" onclick="applyPresetBg('mughal',this)" title="Mughal Night">
+            <div class="preset-bg-thumb" style="background:linear-gradient(170deg,#0d0820 0%,#2c1654 40%,#6b3fa0 75%,#c9a96e 100%)"></div>
+            <span class="preset-bg-label">Mughal</span>
+          </div>
+          <div class="preset-bg-card" data-preset="midnight" onclick="applyPresetBg('midnight',this)" title="Midnight Deep">
+            <div class="preset-bg-thumb" style="background:linear-gradient(170deg,#000000 0%,#0a0a1a 40%,#12123a 70%,#1a1050 100%)"></div>
+            <span class="preset-bg-label">Midnight</span>
+          </div>
+          <div class="preset-bg-card" data-preset="rose" onclick="applyPresetBg('rose',this)" title="Gulistan">
+            <div class="preset-bg-thumb" style="background:linear-gradient(170deg,#1a0008 0%,#4a0a1a 35%,#8b1a2a 65%,#c94a5a 100%)"></div>
+            <span class="preset-bg-label">Gulistan</span>
+          </div>
+          <div class="preset-bg-card" data-preset="parchment" onclick="applyPresetBg('parchment',this)" title="Old Parchment">
+            <div class="preset-bg-thumb" style="background:linear-gradient(170deg,#3d1f00 0%,#8b6914 40%,#c4a050 75%,#f0d898 100%)"></div>
+            <span class="preset-bg-label">Parchment</span>
+          </div>
+          <div class="preset-bg-card" data-preset="marble" onclick="applyPresetBg('marble',this)" title="White Marble">
+            <div class="preset-bg-thumb" style="background:linear-gradient(170deg,#e8e8e8 0%,#f5f0e8 40%,#ffffff 70%,#ede8e0 100%)"></div>
+            <span class="preset-bg-label">Marble</span>
+          </div>
+          <div class="preset-bg-card" data-preset="dusk" onclick="applyPresetBg('dusk',this)" title="Golden Dusk">
+            <div class="preset-bg-thumb" style="background:linear-gradient(170deg,#0d0820 0%,#3a1a0a 35%,#8b3a0a 65%,#e07828 85%,#f0c060 100%)"></div>
+            <span class="preset-bg-label">Dusk</span>
+          </div>
+        </div>
 
         <!-- BG IMAGE CONTROLS — shown after upload -->
         <div id="bg-img-controls">
@@ -764,8 +1166,8 @@ input[type="file"]   { display:none; }
           </div>
 
           <div id="shadow-intensity-wrap" class="visible">
-            <label style="margin-top:8px;">Shadow Intensity — <span class="val" id="shadow-intensity-val">60</span>%</label>
-            <input type="range" min="10" max="100" value="60" id="shadow-intensity-range" oninput="setShadowIntensity(this.value)">
+            <label style="margin-top:8px;">Shadow Intensity — <span class="val" id="shadow-intensity-val">10</span>%</label>
+            <input type="range" min="10" max="100" value="10" id="shadow-intensity-range" oninput="setShadowIntensity(this.value)">
           </div>
 
           <div class="bg-img-btn-row">
@@ -782,8 +1184,61 @@ input[type="file"]   { display:none; }
       </div>
     </div>
 
-    <!-- 6. PROFILE CHIP -->
-    <div class="panel" id="panel-chip">
+    <!-- 6. PIP / STICKER IMAGE -->
+    <div class="panel" id="panel-pip">
+      <div class="panel-header" onclick="togglePanel('panel-pip')">
+        <div class="panel-header-left"><span class="panel-header-icon">📌</span><span class="panel-title">Sticker / PiP Image</span></div>
+        <span class="panel-chevron">▼</span>
+      </div>
+      <div class="panel-body">
+        <p class="panel-desc">Upload a second image (logo, sticker, face cutout, etc.) and drag it anywhere on the card.</p>
+        <label class="upload-btn" for="pip-img-input">🖼️ Upload Sticker Image (PNG / JPG / WebP)</label>
+        <input type="file" id="pip-img-input" accept="image/*" onchange="loadPipImage(this)">
+
+        <div id="pip-img-controls">
+          <div class="pip-img-hint" style="margin-top:8px;">
+            <b>🖱 Drag</b> the sticker directly on the card preview to reposition.<br>
+            Use sliders below to resize &amp; adjust opacity.
+          </div>
+
+          <label style="margin-top:10px;">Sticker Scale — <span class="val" id="pip-scale-val">100</span>%</label>
+          <input type="range" min="5" max="400" value="100" id="pip-scale-range" oninput="setPipScale(this.value)">
+
+          <label>Sticker Opacity — <span class="val" id="pip-opacity-val">100</span>%</label>
+          <input type="range" min="0" max="100" value="100" id="pip-opacity-range" oninput="setPipOpacity(this.value)">
+
+          <label>Corner Radius — <span class="val" id="pip-radius-val">0</span>px</label>
+          <input type="range" min="0" max="200" value="0" id="pip-radius-range" oninput="setPipRadius(this.value)">
+
+          <label>Shape Preset</label>
+          <div class="pip-shape-row">
+            <button class="pip-shape-btn active" onclick="setPipShape('rect',this)">■ Rectangle</button>
+            <button class="pip-shape-btn" onclick="setPipShape('rounded',this)">▢ Rounded</button>
+            <button class="pip-shape-btn" onclick="setPipShape('circle',this)">● Circle</button>
+          </div>
+
+          <label style="margin-top:10px;">Quick Position</label>
+          <div class="pos-grid">
+            <button class="pos-btn" onclick="setPipPos('top-left')">↖ Top Left</button>
+            <button class="pos-btn" onclick="setPipPos('top-center')">↑ Top Ctr</button>
+            <button class="pos-btn" onclick="setPipPos('top-right')">↗ Top Right</button>
+            <button class="pos-btn" onclick="setPipPos('mid-left')">← Mid Left</button>
+            <button class="pos-btn" onclick="setPipPos('mid-center')">· Center</button>
+            <button class="pos-btn" onclick="setPipPos('mid-right')">→ Mid Right</button>
+            <button class="pos-btn" onclick="setPipPos('bot-left')">↙ Bot Left</button>
+            <button class="pos-btn" onclick="setPipPos('bot-center')">↓ Bot Ctr</button>
+            <button class="pos-btn" onclick="setPipPos('bot-right')">↘ Bot Right</button>
+          </div>
+
+          <div style="display:flex;gap:6px;margin-top:10px;">
+            <button class="bg-img-action-btn" onclick="fitPipImg()">⤢ Fit to Card</button>
+            <button class="bg-img-action-btn danger" onclick="removePipImg()">✕ Remove</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 7. PROFILE CHIP -->    <div class="panel" id="panel-chip">
       <div class="panel-header" onclick="togglePanel('panel-chip')">
         <div class="panel-header-left"><span class="panel-header-icon">👤</span><span class="panel-title">Profile Chip</span></div>
         <span class="panel-chevron">▼</span>
@@ -885,8 +1340,8 @@ input[type="file"]   { display:none; }
     <div class="panel-download">
       <span class="panel-download-title">⬇ Download</span>
       <p class="panel-desc">Exports at chosen resolution. Guidelines & UI chrome are excluded.</p>
-      <label>Export Scale — <span class="val" id="export-scale-val">2</span>×</label>
-      <input type="range" min="1" max="4" step="0.5" value="2" id="export-scale-range"
+      <label>Export Scale — <span class="val" id="export-scale-val">4</span>×</label>
+      <input type="range" min="1" max="4" step="0.5" value="4" id="export-scale-range"
         oninput="document.getElementById('export-scale-val').textContent=this.value">
       <button id="download-btn-panel" onclick="downloadCard()">⬇ Download Image</button>
     </div>
@@ -924,7 +1379,7 @@ let bgImgLoaded   = false;
 let bgImgNatW     = 0;
 let bgImgNatH     = 0;
 let bgEdgeShadow  = true;   // premium edge shadow ON by default
-let shadowIntensity = 60;   // 10-100
+let shadowIntensity = 10;   // 10-100
 
 // drag shared
 let activeDrag    = null;
@@ -1147,6 +1602,7 @@ function initDrag() {
   const chip     = document.getElementById('profile-chip');
   const shayDisp = document.getElementById('shayari-display');
   const bgImg    = document.getElementById('bg-img-el');
+  const pipImg   = document.getElementById('pip-img-el');
 
   function onDown(e, target) {
     if (e.button !== undefined && e.button !== 0) return;
@@ -1172,6 +1628,10 @@ function initDrag() {
       dragOffX = cx - bgImg.getBoundingClientRect().left;
       dragOffY = cy - bgImg.getBoundingClientRect().top;
       bgImg.classList.add('dragging');
+    } else if (target === 'pipimg') {
+      dragOffX = cx - pipImg.getBoundingClientRect().left;
+      dragOffY = cy - pipImg.getBoundingClientRect().top;
+      pipImg.classList.add('dragging');
     }
   }
 
@@ -1204,12 +1664,18 @@ function initDrag() {
       bgImgX = cx - cardRect.left - dragOffX;
       bgImgY = cy - cardRect.top  - dragOffY;
       applyBgImgTransform();
+
+    } else if (activeDrag === 'pipimg') {
+      pipImgX = cx - cardRect.left - dragOffX;
+      pipImgY = cy - cardRect.top  - dragOffY;
+      applyPipImgTransform();
     }
   }
 
   function onUp() {
     if (activeDrag === 'text') shayDisp.classList.remove('dragging');
     if (activeDrag === 'bgimg') bgImg.classList.remove('dragging');
+    if (activeDrag === 'pipimg') pipImg.classList.remove('dragging');
     activeDrag = null;
   }
 
@@ -1218,8 +1684,13 @@ function initDrag() {
     if (e.pointerType === 'touch' || e.pointerType === 'pen') onDown(e, 'text');
   });
   bgImg.addEventListener('pointerdown', e => {
+    if (bgLocked) return;   // 🔒 locked — do nothing
     e.stopPropagation();
     onDown(e, 'bgimg');
+  });
+  pipImg.addEventListener('pointerdown', e => {
+    e.stopPropagation();
+    onDown(e, 'pipimg');
   });
 
   window.addEventListener('pointermove', onMove);
@@ -1382,10 +1853,6 @@ function setLineHeight(v) {
   document.getElementById('line-height-val').textContent = v;
   document.getElementById('shayari-text').style.lineHeight = v;
 }
-function setLetterSpacing(v) {
-  document.getElementById('letter-spacing-val').textContent = v;
-  document.getElementById('shayari-text').style.letterSpacing = v + 'px';
-}
 function setWeight(w, btn) {
   document.querySelectorAll('#weight-row .align-btn').forEach(b => b.classList.remove('active'));
   btn.classList.add('active');
@@ -1487,24 +1954,120 @@ function setOverlay(v) {
 function loadBgImage(input) {
   const file = input.files[0];
   if (!file) return;
+  // Clear any active preset selection
+  document.querySelectorAll('.preset-bg-card').forEach(c => c.classList.remove('active'));
   const url = URL.createObjectURL(file);
-  const imgEl = document.getElementById('bg-img-el');
+  _applyBgImageUrl(url);
+  input.value = '';
+}
 
+// ── Preset BG definitions ──
+const PRESET_BG_DEFS = {
+  mughal: {
+    // Deep indigo → purple → gold — Mughal night
+    gradient: 'linear-gradient(170deg,#0d0820 0%,#2c1654 40%,#6b3fa0 75%,#c9a96e 100%)',
+  },
+  midnight: {
+    gradient: 'linear-gradient(170deg,#000000 0%,#0a0a1a 40%,#12123a 70%,#1a1050 100%)',
+  },
+  rose: {
+    gradient: 'linear-gradient(170deg,#1a0008 0%,#4a0a1a 35%,#8b1a2a 65%,#c94a5a 100%)',
+  },
+  parchment: {
+    gradient: 'linear-gradient(170deg,#3d1f00 0%,#8b6914 40%,#c4a050 75%,#f0d898 100%)',
+  },
+  marble: {
+    gradient: 'linear-gradient(170deg,#e8e8e8 0%,#f5f0e8 40%,#ffffff 70%,#ede8e0 100%)',
+  },
+  dusk: {
+    gradient: 'linear-gradient(170deg,#0d0820 0%,#3a1a0a 35%,#8b3a0a 65%,#e07828 85%,#f0c060 100%)',
+  },
+};
+
+function applyPresetBg(preset, cardEl) {
+  document.querySelectorAll('.preset-bg-card').forEach(c => c.classList.remove('active'));
+  cardEl.classList.add('active');
+
+  const def = PRESET_BG_DEFS[preset];
+  if (!def) return;
+
+  // Convert gradient to a canvas image and apply as bg image
+  // so it fills card properly and benefits from all bg-image controls
+  const card = document.getElementById('card');
+  const cw   = parseInt(card.style.width)  || 340;
+  const ch   = parseInt(card.style.height) || 604;
+
+  const canvas = document.createElement('canvas');
+  canvas.width  = cw * 3;
+  canvas.height = ch * 3;
+  const ctx = canvas.getContext('2d');
+
+  // Parse and draw the gradient
+  _drawGradientToCanvas(ctx, def.gradient, canvas.width, canvas.height);
+
+  const dataUrl = canvas.toDataURL('image/png');
+  _applyBgImageUrl(dataUrl);
+}
+
+function _drawGradientToCanvas(ctx, gradientStr, w, h) {
+  const match = gradientStr.match(/linear-gradient\((\d+)deg,\s*(.+)\)/s);
+  if (!match) {
+    ctx.fillStyle = '#1a1a2e';
+    ctx.fillRect(0,0,w,h);
+    return;
+  }
+  const deg = parseFloat(match[1]);
+  const stopsStr = match[2];
+
+  const rad = (deg - 90) * Math.PI / 180;
+  const len = Math.sqrt(w*w + h*h);
+  const cx = w/2, cy = h/2;
+  const x1 = cx - Math.cos(rad) * len/2;
+  const y1 = cy - Math.sin(rad) * len/2;
+  const x2 = cx + Math.cos(rad) * len/2;
+  const y2 = cy + Math.sin(rad) * len/2;
+
+  const grad = ctx.createLinearGradient(x1, y1, x2, y2);
+
+  // Split stops carefully: split on comma not inside parens
+  const stopParts = stopsStr.split(/,(?![^(]*\))/);
+  const parsed = stopParts.map(s => s.trim()).map(s => {
+    const m = s.match(/^(#[0-9a-fA-F]+|rgba?\([^)]+\)|\w+)\s*(\d+(?:\.\d+)?%)?$/);
+    if (!m) return null;
+    return { color: m[1], pos: m[2] ? parseFloat(m[2]) / 100 : null };
+  }).filter(Boolean);
+
+  // Fill in missing positions
+  parsed.forEach((s, i) => {
+    if (s.pos === null) {
+      if (i === 0) s.pos = 0;
+      else if (i === parsed.length - 1) s.pos = 1;
+      else s.pos = i / (parsed.length - 1);
+    }
+  });
+
+  parsed.forEach(s => {
+    try { grad.addColorStop(Math.min(1, Math.max(0, s.pos)), s.color); } catch(e){}
+  });
+
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, w, h);
+}
+
+function _applyBgImageUrl(url) {
+  const imgEl = document.getElementById('bg-img-el');
   imgEl.onload = () => {
     bgImgNatW   = imgEl.naturalWidth;
     bgImgNatH   = imgEl.naturalHeight;
     bgImgLoaded = true;
-
-    fitBgImg();
-
+    fillBgImg();   // auto-fill to cover card
     document.getElementById('bg-img-controls').classList.add('visible');
     imgEl.style.display = 'block';
-
-    // Show edge shadow overlay by default
+    // Show lock controls
+    document.getElementById('bg-lock-wrap').style.display = 'block';
     updateEdgeShadowOverlay();
   };
   imgEl.src = url;
-  input.value = '';
 }
 
 function applyBgImgTransform() {
@@ -1582,6 +2145,14 @@ function removeBgImg() {
   document.getElementById('bg-opacity-val').textContent = 100;
   // Hide shadow overlay
   document.getElementById('bg-img-shadow-overlay').classList.remove('visible');
+  // Reset lock
+  bgLocked = false;
+  const tog = document.getElementById('bg-lock-toggle');
+  if (tog) tog.classList.remove('on');
+  document.getElementById('bg-lock-hint').style.display = 'none';
+  document.getElementById('bg-lock-wrap').style.display = 'none';
+  // Deselect asset cards
+  document.querySelectorAll('.asset-bg-card').forEach(c => c.classList.remove('active'));
 }
 
 /* ══════════════════════════════════════════
@@ -1677,6 +2248,208 @@ function setChipPos(pos) {
 }
 
 /* ══════════════════════════════════════════
+   NOTEBOOK TEMPLATES
+══════════════════════════════════════════ */
+let currentNb      = 'none';
+let nbPaperColor   = '#fafaf7';
+let nbLineColor    = '#b8c8e0';
+let nbOpacity      = 100;
+
+// ── Notebook SVG generators ──
+const NB_GENERATORS = {
+
+  'white-ruled': (w, h) => {
+    const lineSpacing = Math.round(h / 20);
+    const startY      = Math.round(lineSpacing * 2);
+    const marginX     = Math.round(w * 0.10);
+    const spiralX     = Math.round(w * 0.055);
+    let lines = '';
+    for (let y = startY; y < h - 10; y += lineSpacing) {
+      lines += `<line x1="${marginX}" y1="${y}" x2="${w - 10}" y2="${y}" stroke="${nbLineColor}" stroke-width="1" opacity=".7"/>`;
+    }
+    // spiral holes + coil
+    let holes = '', coil = '';
+    const holeCount = Math.floor(h / (lineSpacing * 2));
+    const holeStep  = h / (holeCount + 1);
+    for (let i = 1; i <= holeCount; i++) {
+      const hy = Math.round(holeStep * i);
+      holes += `<circle cx="${spiralX}" cy="${hy}" r="${Math.round(w * 0.025)}" fill="none" stroke="#b0a888" stroke-width="1.5"/>`;
+    }
+    // coil path
+    for (let i = 1; i <= holeCount; i++) {
+      const hy = Math.round(holeStep * i);
+      const nexty = Math.round(holeStep * (i + 1));
+      if (i < holeCount) {
+        coil += `<path d="M${spiralX} ${hy - Math.round(w*0.025)} Q${spiralX - Math.round(w*0.045)} ${(hy+nexty)/2} ${spiralX} ${nexty - Math.round(w*0.025)}" fill="none" stroke="#c0c0c0" stroke-width="1.5" stroke-linecap="round"/>`;
+      }
+    }
+    // margin line
+    const ml = `<line x1="${marginX}" y1="0" x2="${marginX}" y2="${h}" stroke="#f4a0a0" stroke-width="1.2" opacity=".8"/>`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" style="display:block">
+      <rect width="${w}" height="${h}" fill="${nbPaperColor}"/>
+      ${coil}${holes}${ml}${lines}
+    </svg>`;
+  },
+
+  'legal-pad': (w, h) => {
+    const lineSpacing = Math.round(h / 18);
+    const startY      = Math.round(h * 0.13);
+    const marginX     = Math.round(w * 0.09);
+    const bindH       = Math.round(h * 0.09);
+    // paper color — force yellow tint on legal pad
+    const paperC = '#fef5a5';
+    let lines = '';
+    for (let y = startY + lineSpacing; y < h - 8; y += lineSpacing) {
+      lines += `<line x1="${marginX}" y1="${y}" x2="${w - 6}" y2="${y}" stroke="#c8a800" stroke-width=".9" opacity=".45"/>`;
+    }
+    const holeR = Math.round(w * 0.025);
+    const holes = [0.18, 0.5, 0.82].map(p =>
+      `<circle cx="${Math.round(w*p)}" cy="${Math.round(bindH/2)}" r="${holeR}" fill="#c0a800" opacity=".7"/>`
+    ).join('');
+    const ml = `<line x1="${marginX}" y1="${bindH}" x2="${marginX}" y2="${h}" stroke="#f08080" stroke-width="1.2" opacity=".7"/>`;
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" style="display:block">
+      <rect width="${w}" height="${h}" fill="${paperC}"/>
+      <rect width="${w}" height="${bindH}" fill="#e8d020"/>
+      <line x1="0" y1="${bindH}" x2="${w}" y2="${bindH}" stroke="#b89000" stroke-width="1.5"/>
+      ${holes}${ml}${lines}
+    </svg>`;
+  },
+
+  'parchment': (w, h) => {
+    const lineSpacing = Math.round(h / 18);
+    const startY      = Math.round(h * 0.11);
+    let lines = '';
+    for (let y = startY; y < h - 10; y += lineSpacing) {
+      lines += `<line x1="${Math.round(w*0.07)}" y1="${y}" x2="${Math.round(w*0.93)}" y2="${y}" stroke="#8b6914" stroke-width=".7" opacity=".28"/>`;
+    }
+    const bpad = Math.round(w * 0.06);
+    const border1 = `<rect x="${bpad}" y="${bpad}" width="${w-bpad*2}" height="${h-bpad*2}" fill="none" stroke="#9a7020" stroke-width="1.2" opacity=".4"/>`;
+    const border2 = `<rect x="${bpad+3}" y="${bpad+3}" width="${w-bpad*2-6}" height="${h-bpad*2-6}" fill="none" stroke="#9a7020" stroke-width=".5" opacity=".2"/>`;
+    // corner ornaments
+    const cornerSize = Math.round(w * 0.06);
+    const corners = [
+      [bpad, bpad], [w-bpad, bpad], [bpad, h-bpad], [w-bpad, h-bpad]
+    ].map(([cx,cy]) =>
+      `<path d="M${cx-cornerSize} ${cy} L${cx} ${cy} L${cx} ${cy-cornerSize}" fill="none" stroke="#9a7020" stroke-width="1.5" opacity=".4" transform="rotate(${cx > w/2 ? 90 : 0},${cx},${cy}) rotate(${cy > h/2 ? 180 : 0},${cx},${cy})"/>
+       <circle cx="${cx}" cy="${cy}" r="3" fill="#9a7020" opacity=".3"/>`
+    ).join('');
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" style="display:block">
+      <defs>
+        <linearGradient id="pgfull" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#f6e9cc"/>
+          <stop offset="50%" stop-color="${nbPaperColor === '#fafaf7' ? '#ecdbb0' : nbPaperColor}"/>
+          <stop offset="100%" stop-color="#e0c898"/>
+        </linearGradient>
+      </defs>
+      <rect width="${w}" height="${h}" fill="url(#pgfull)"/>
+      <path d="M0 0 Q${w*0.04} ${h*0.05} 0 ${h*0.1} Q${w*0.04} ${h*0.2} 0 ${h*0.3} Q${w*0.04} ${h*0.5} 0 ${h*0.6} Q${w*0.04} ${h*0.75} 0 ${h*0.9} Q${w*0.04} ${h*0.95} 0 ${h} L0 0Z" fill="#c4a050" opacity=".18"/>
+      ${border1}${border2}${corners}${lines}
+    </svg>`;
+  },
+
+  'blackboard': (w, h) => {
+    const lineSpacing = Math.round(h / 18);
+    const startY      = Math.round(h * 0.10);
+    const frameW      = Math.round(w * 0.055);
+    const chalkColor  = 'rgba(255,255,255,0.15)';
+    let lines = '';
+    for (let y = startY; y < h - frameW; y += lineSpacing) {
+      lines += `<line x1="${frameW}" y1="${y}" x2="${w - frameW}" y2="${y}" stroke="${nbLineColor !== '#b8c8e0' ? nbLineColor : chalkColor}" stroke-width="1"/>`;
+    }
+    const ledgeH = Math.round(h * 0.07);
+    const chalkW = Math.round(w * 0.15);
+    const chalks = [0.12, 0.28, 0.44].map(p =>
+      `<rect x="${Math.round(w*p)}" y="${Math.round(h-ledgeH+h*0.01)}" width="${chalkW}" height="${Math.round(ledgeH*0.5)}" rx="2" fill="#e8e4d8" opacity=".9"/>`
+    ).join('');
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" style="display:block">
+      <defs>
+        <linearGradient id="bbg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="${nbPaperColor === '#fafaf7' ? '#1e2a1e' : nbPaperColor}"/>
+          <stop offset="100%" stop-color="#0d150d"/>
+        </linearGradient>
+      </defs>
+      <rect width="${w}" height="${h}" fill="url(#bbg)"/>
+      <!-- wood frame -->
+      <rect width="${w}" height="${frameW}" fill="#6b3e1a"/>
+      <rect y="${h-frameW}" width="${w}" height="${frameW}" fill="#5c3414"/>
+      <rect width="${frameW}" height="${h}" fill="#6b3e1a"/>
+      <rect x="${w-frameW}" width="${frameW}" height="${h}" fill="#5c3414"/>
+      <!-- chalk ledge -->
+      <rect y="${h-ledgeH}" width="${w}" height="${ledgeH}" fill="#1a280a"/>
+      ${chalks}
+      ${lines}
+    </svg>`;
+  },
+
+  'open-book': (w, h) => {
+    const gutterW     = Math.round(w * 0.06);
+    const gutterX     = (w - gutterW) / 2;
+    const lineSpacing = Math.round(h / 18);
+    const startY      = Math.round(h * 0.08);
+    const pagePad     = Math.round(w * 0.06);
+    let leftLines = '', rightLines = '';
+    for (let y = startY; y < h - 10; y += lineSpacing) {
+      leftLines  += `<line x1="${pagePad}" y1="${y}" x2="${gutterX - 4}" y2="${y}" stroke="${nbLineColor}" stroke-width=".9" opacity=".65"/>`;
+      rightLines += `<line x1="${gutterX + gutterW + 4}" y1="${y}" x2="${w - pagePad}" y2="${y}" stroke="${nbLineColor}" stroke-width=".9" opacity=".65"/>`;
+    }
+    // spiral circles in gutter
+    let spirals = '';
+    for (let y = startY; y < h - 10; y += lineSpacing) {
+      spirals += `<ellipse cx="${w/2}" cy="${y}" rx="${gutterW * 0.36}" ry="${lineSpacing * 0.35}" fill="none" stroke="#999" stroke-width="1.3"/>`;
+    }
+    return `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" style="display:block">
+      <rect width="${w}" height="${h}" fill="${nbPaperColor}"/>
+      <!-- gutter shadow -->
+      <rect x="${gutterX}" width="${gutterW}" height="${h}" fill="rgba(0,0,0,0.07)"/>
+      <!-- page crease lines -->
+      <line x1="${gutterX}" y1="0" x2="${gutterX}" y2="${h}" stroke="#ccc" stroke-width=".6"/>
+      <line x1="${gutterX + gutterW}" y1="0" x2="${gutterX + gutterW}" y2="${h}" stroke="#ccc" stroke-width=".6"/>
+      ${leftLines}${rightLines}
+      ${spirals}
+    </svg>`;
+  },
+};
+
+function setNotebook(type, btn) {
+  currentNb = type;
+  document.querySelectorAll('#nb-grid .nb-card').forEach(c => c.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('nb-controls').style.display = type === 'none' ? 'none' : 'block';
+  renderNotebook();
+}
+
+function renderNotebook() {
+  const layer = document.getElementById('notebook-layer');
+  if (currentNb === 'none') {
+    layer.classList.remove('visible');
+    layer.innerHTML = '';
+    return;
+  }
+  const card = document.getElementById('card');
+  const w = parseInt(card.style.width);
+  const h = parseInt(card.style.height);
+  const gen = NB_GENERATORS[currentNb];
+  if (!gen) return;
+  layer.classList.add('visible');
+  layer.style.opacity = nbOpacity / 100;
+  layer.innerHTML = gen(w, h);
+}
+
+function setNbPaperColor(c) {
+  nbPaperColor = c;
+  renderNotebook();
+}
+function setNbLineColor(c) {
+  nbLineColor = c;
+  renderNotebook();
+}
+function setNbOpacity(v) {
+  nbOpacity = +v;
+  document.getElementById('nb-opacity-val').textContent = v;
+  renderNotebook();
+}
+
+/* ══════════════════════════════════════════
    WATERMARK
 ══════════════════════════════════════════ */
 function toggleWmVis() {
@@ -1748,6 +2521,8 @@ async function downloadCard() {
   hint.style.display  = 'none';
   guide.style.display = 'none';
   wzBar.style.display = 'none';
+  // Remove pip selection highlight for clean export
+  document.getElementById('pip-img-el').classList.remove('pip-selected');
 
   document.querySelectorAll('.selected-word').forEach(el => el.classList.remove('selected-word'));
 
@@ -1780,6 +2555,208 @@ async function downloadCard() {
   }
 
   btns.forEach(b => { b.disabled = false; b.textContent = '⬇ Download Image'; });
+}
+
+/* ══════════════════════════════════════════
+   ASSET PRESET BACKGROUNDS
+══════════════════════════════════════════ */
+function applyAssetBg(cardEl) {
+  // Deselect all asset cards + gradient presets
+  document.querySelectorAll('.asset-bg-card').forEach(c => c.classList.remove('active'));
+  document.querySelectorAll('.preset-bg-card').forEach(c => c.classList.remove('active'));
+  cardEl.classList.add('active');
+
+  const assetPath = cardEl.dataset.asset;
+
+  // Load via a fresh Image so we get natural dimensions
+  const tmpImg = new Image();
+  tmpImg.onload = () => {
+    const imgEl = document.getElementById('bg-img-el');
+    // Set src — reuse the existing _applyBgImageUrl flow so Fill/controls work
+    imgEl.onload = () => {
+      bgImgNatW   = imgEl.naturalWidth;
+      bgImgNatH   = imgEl.naturalHeight;
+      bgImgLoaded = true;
+      fillBgImg();   // nicely fill card
+      document.getElementById('bg-img-controls').classList.add('visible');
+      imgEl.style.display = 'block';
+      // Show lock controls
+      document.getElementById('bg-lock-wrap').style.display = 'block';
+      updateEdgeShadowOverlay();
+    };
+    imgEl.src = assetPath + '?' + Date.now(); // cache-bust so onload always fires
+  };
+  tmpImg.src = assetPath;
+}
+
+/* ══════════════════════════════════════════
+   BACKGROUND LOCK
+══════════════════════════════════════════ */
+let bgLocked = false;
+
+function toggleBgLock() {
+  bgLocked = !bgLocked;
+  const tog  = document.getElementById('bg-lock-toggle');
+  const hint = document.getElementById('bg-lock-hint');
+  tog.classList.toggle('on', bgLocked);
+  hint.style.display = bgLocked ? 'block' : 'none';
+
+  // Visual feedback on the bg image
+  const imgEl = document.getElementById('bg-img-el');
+  imgEl.style.cursor  = bgLocked ? 'default' : 'grab';
+  imgEl.style.outline = bgLocked ? '2px solid rgba(212,168,75,.45)' : 'none';
+  imgEl.style.outlineOffset = bgLocked ? '-2px' : '0';
+}
+
+/* Show lock wrap whenever a bg image is loaded (upload or preset) */
+function _showBgLockWrap() {
+  document.getElementById('bg-lock-wrap').style.display = 'block';
+}
+
+/* ══════════════════════════════════════════
+   PIP / STICKER IMAGE
+══════════════════════════════════════════ */
+let pipImgScale   = 100;
+let pipImgX       = 60;
+let pipImgY       = 60;
+let pipImgLoaded  = false;
+let pipImgNatW    = 0;
+let pipImgNatH    = 0;
+let pipRadius     = 0;
+
+function loadPipImage(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const url = URL.createObjectURL(file);
+  const imgEl = document.getElementById('pip-img-el');
+
+  imgEl.onload = () => {
+    pipImgNatW   = imgEl.naturalWidth;
+    pipImgNatH   = imgEl.naturalHeight;
+    pipImgLoaded = true;
+
+    // Default size: 30% of card width
+    const card = document.getElementById('card');
+    const cw   = parseInt(card.style.width);
+    pipImgScale = (cw * 0.30 / pipImgNatW) * 100;
+    document.getElementById('pip-scale-range').value = Math.min(400, Math.round(pipImgScale));
+    document.getElementById('pip-scale-val').textContent = Math.round(pipImgScale);
+
+    // Place at top-right by default
+    const scale = pipImgScale / 100;
+    const ch    = parseInt(card.style.height);
+    pipImgX = cw - (pipImgNatW * scale) - 22;
+    pipImgY = 22;
+
+    applyPipImgTransform();
+    document.getElementById('pip-img-controls').classList.add('visible');
+    imgEl.style.display = 'block';
+  };
+  imgEl.src = url;
+  input.value = '';
+}
+
+function applyPipImgTransform() {
+  const imgEl = document.getElementById('pip-img-el');
+  const scale = pipImgScale / 100;
+  imgEl.style.width        = (pipImgNatW * scale) + 'px';
+  imgEl.style.height       = (pipImgNatH * scale) + 'px';
+  imgEl.style.left         = pipImgX + 'px';
+  imgEl.style.top          = pipImgY + 'px';
+  imgEl.style.borderRadius = pipRadius + 'px';
+}
+
+function setPipScale(v) {
+  pipImgScale = +v;
+  document.getElementById('pip-scale-val').textContent = v;
+  applyPipImgTransform();
+}
+
+function setPipOpacity(v) {
+  document.getElementById('pip-opacity-val').textContent = v;
+  document.getElementById('pip-img-el').style.opacity = v / 100;
+}
+
+function setPipRadius(v) {
+  pipRadius = +v;
+  document.getElementById('pip-radius-val').textContent = v;
+  applyPipImgTransform();
+}
+
+function setPipShape(shape, btn) {
+  document.querySelectorAll('.pip-shape-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const card   = document.getElementById('card');
+  const slider = document.getElementById('pip-radius-range');
+  if (shape === 'rect') {
+    pipRadius = 0;
+  } else if (shape === 'rounded') {
+    // ~20% of shorter side
+    const scale = pipImgScale / 100;
+    const shortSide = Math.min(pipImgNatW * scale, pipImgNatH * scale);
+    pipRadius = Math.round(shortSide * 0.18);
+  } else if (shape === 'circle') {
+    const scale = pipImgScale / 100;
+    const shortSide = Math.min(pipImgNatW * scale, pipImgNatH * scale);
+    pipRadius = Math.round(shortSide / 2);
+  }
+  slider.value = Math.min(200, pipRadius);
+  document.getElementById('pip-radius-val').textContent = Math.min(200, pipRadius);
+  applyPipImgTransform();
+}
+
+function setPipPos(pos) {
+  if (!pipImgLoaded) return;
+  const card   = document.getElementById('card');
+  const cw     = parseInt(card.style.width);
+  const ch     = parseInt(card.style.height);
+  const scale  = pipImgScale / 100;
+  const pw     = pipImgNatW * scale;
+  const ph     = pipImgNatH * scale;
+  const pad    = 22;
+  const map    = {
+    'top-left':   [pad,          pad],
+    'top-center': [(cw - pw) / 2, pad],
+    'top-right':  [cw - pw - pad, pad],
+    'mid-left':   [pad,           (ch - ph) / 2],
+    'mid-center': [(cw - pw) / 2, (ch - ph) / 2],
+    'mid-right':  [cw - pw - pad, (ch - ph) / 2],
+    'bot-left':   [pad,           ch - ph - pad],
+    'bot-center': [(cw - pw) / 2, ch - ph - pad],
+    'bot-right':  [cw - pw - pad, ch - ph - pad],
+  };
+  [pipImgX, pipImgY] = map[pos];
+  applyPipImgTransform();
+}
+
+function fitPipImg() {
+  if (!pipImgLoaded) return;
+  const card   = document.getElementById('card');
+  const cw     = parseInt(card.style.width);
+  const ch     = parseInt(card.style.height);
+  const scaleW = cw / pipImgNatW;
+  const scaleH = ch / pipImgNatH;
+  pipImgScale  = Math.min(scaleW, scaleH) * 100;
+  document.getElementById('pip-scale-range').value = Math.min(400, Math.round(pipImgScale));
+  document.getElementById('pip-scale-val').textContent = Math.round(pipImgScale);
+  const scale  = pipImgScale / 100;
+  pipImgX = (cw - pipImgNatW * scale) / 2;
+  pipImgY = (ch - pipImgNatH * scale) / 2;
+  applyPipImgTransform();
+}
+
+function removePipImg() {
+  const imgEl = document.getElementById('pip-img-el');
+  imgEl.style.display = 'none';
+  imgEl.src = '';
+  pipImgLoaded = false;
+  document.getElementById('pip-img-controls').classList.remove('visible');
+  document.getElementById('pip-scale-range').value = 100;
+  document.getElementById('pip-scale-val').textContent = 100;
+  document.getElementById('pip-opacity-range').value = 100;
+  document.getElementById('pip-opacity-val').textContent = 100;
+  document.getElementById('pip-radius-range').value = 0;
+  document.getElementById('pip-radius-val').textContent = 0;
 }
 </script>
 </body>
