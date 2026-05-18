@@ -626,13 +626,13 @@ input[type="file"]   { display:none; }
     <div class="card-outer">
 
       <div class="size-selector">
-        <button class="size-btn" data-size="story" onclick="setCardSize('story')">
+        <button class="size-btn active" data-size="story" onclick="setCardSize('story')">
           <span class="sb-ratio">9:16</span><span class="sb-label">Story / Reel</span>
         </button>
         <button class="size-btn" data-size="post" onclick="setCardSize('post')">
           <span class="sb-ratio">1:1</span><span class="sb-label">FB / IG Post</span>
         </button>
-        <button class="size-btn active" data-size="portrait" onclick="setCardSize('portrait')">
+        <button class="size-btn" data-size="portrait" onclick="setCardSize('portrait')">
           <span class="sb-ratio">4:5</span><span class="sb-label">IG Portrait</span>
         </button>
       </div>
@@ -1476,7 +1476,7 @@ let wzBarActive   = false;  // true when pointer is down inside word-zoom-bar
    INIT
 ══════════════════════════════════════════ */
 window.addEventListener('DOMContentLoaded', () => {
-  setCardSize('portrait');
+  setCardSize('story');
   buildBgSwatches();
   initDrag();
   initWordZoom();
@@ -1499,6 +1499,10 @@ window.addEventListener('DOMContentLoaded', () => {
   // Initialise shadow overlay state
   document.getElementById('bg-img-shadow-toggle').classList.add('on');
   updateEdgeShadowOverlay();
+  bgLocked = true;
+  document.getElementById('bg-lock-toggle').classList.add('on');
+  document.getElementById('bg-lock-hint').style.display = 'block';
+  document.getElementById('bg-lock-wrap').style.display = 'block';
 });
 
 /* ══════════════════════════════════════════
